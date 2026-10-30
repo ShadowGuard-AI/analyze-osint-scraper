@@ -1,3 +1,5 @@
+![Banner](banner.png)
+
 # analyze-osint-scraper
 Scrapes OSINT sources (e.g., social media, forums, pastebins) for mentions of specific keywords or IOCs. Uses libraries like `requests` and `beautifulsoup4`. - Focused on Data analysis and reporting
 
