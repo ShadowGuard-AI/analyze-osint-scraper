@@ -17,5 +17,7 @@ Scrapes OSINT sources (e.g., social media, forums, pastebins) for mentions of sp
 - `-o`: Output CSV file path.
 - `--max_pages`: Maximum number of pages to scrape per URL.  Useful for sites with pagination. Defaults to 1.
 
+Exit status: the tool exits 1 if the results CSV cannot be written, or if every named URL failed to fetch. When some pages could not be fetched, a partial failure status is printed and the run exits 0 with the results from the pages that were fetched.
+
 ## License
 Copyright (c) ShadowGuardAI

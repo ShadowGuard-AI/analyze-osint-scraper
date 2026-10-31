@@ -75,9 +75,12 @@ def scrape_url(url, keywords, iocs, max_pages=1):
         max_pages (int):  Maximum number of pages to scrape (for paginated sites)
 
     Returns:
-        list: A list of dictionaries, where each dictionary represents a match.
+        tuple: A pair (results, failed_fetches), where results is a list
+        of dictionaries representing matches, and failed_fetches is the
+        number of page fetches that failed for this URL.
     """
     results = []
+    failed_fetches = 0
     try:
         for page_num in range(1, max_pages + 1):
             current_url = url
@@ -94,6 +97,7 @@ def scrape_url(url, keywords, iocs, max_pages=1):
                 response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
             except requests.exceptions.RequestException as e:
                 logging.error(f"Error fetching URL {current_url}: {e}")
+                failed_fetches += 1
                 continue # Skip to the next page of this URL if an error occurred
 
             soup = BeautifulSoup(response.content, 'html.parser')
@@ -121,8 +125,9 @@ def scrape_url(url, keywords, iocs, max_pages=1):
                         })
     except Exception as e:
         logging.error(f"General scraping error for URL {url}: {e}")
+        failed_fetches += 1
 
-    return results
+    return results, failed_fetches
 
 def save_results_to_csv(results, output_file):
     """
@@ -131,13 +136,18 @@ def save_results_to_csv(results, output_file):
     Args:
         results (list): A list of dictionaries representing the scraping results.
         output_file (str): The path to the output CSV file.
+
+    Returns:
+        bool: True when the CSV was written, False when it could not be.
     """
     try:
         df = pd.DataFrame(results)
         df.to_csv(output_file, index=False)
         logging.info(f"Results saved to: {output_file}")
+        return True
     except Exception as e:
         logging.error(f"Error saving results to CSV: {e}")
+        return False
 
 
 def main():
@@ -159,10 +169,22 @@ def main():
             sys.exit(1)
 
     all_results = []
+    total_fetches = 0
+    failed_fetches = 0
     for url in args.urls:
-        all_results.extend(scrape_url(url, keywords, iocs, args.max_pages))
+        results, failed = scrape_url(url, keywords, iocs, args.max_pages)
+        all_results.extend(results)
+        total_fetches += args.max_pages
+        failed_fetches += failed
 
-    save_results_to_csv(all_results, args.output)
+    if not save_results_to_csv(all_results, args.output):
+        sys.exit(1)
+
+    if total_fetches and failed_fetches == total_fetches:
+        logging.error(f"All {total_fetches} page fetch(es) failed: no named URL could be read.")
+        sys.exit(1)
+    if failed_fetches:
+        logging.warning(f"Partial failure: {failed_fetches} of {total_fetches} page fetch(es) could not be fetched.")
 
 
 if __name__ == "__main__":
