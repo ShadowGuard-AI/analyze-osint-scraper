@@ -85,7 +85,11 @@ def scrape_url(url, keywords, iocs, max_pages=1):
         for page_num in range(1, max_pages + 1):
             current_url = url
             if page_num > 1:
-                # Attempt to handle pagination (very basic, might need customization per site)
+                # The page parameter is a guess at the site's scheme.
+                # A site that names its parameter differently, or does
+                # not paginate this way at all, serves the same first
+                # page again and I record the same matches once per
+                # page, with nothing in the row showing they are copies.
                 if "?" in url:
                     current_url = f"{url}&page={page_num}"
                 else:
@@ -101,6 +105,11 @@ def scrape_url(url, keywords, iocs, max_pages=1):
                 continue # Skip to the next page of this URL if an error occurred
 
             soup = BeautifulSoup(response.content, 'html.parser')
+            # get_text pulls script and style bodies in with the
+            # visible text, so a keyword can match inside a script that
+            # no reader of the page ever sees. For spotting mentions
+            # that bias is acceptable; for claiming a page says
+            # something, it is a trap I want named here.
             text_content = soup.get_text()
 
             if keywords:
@@ -177,6 +186,10 @@ def main():
         total_fetches += args.max_pages
         failed_fetches += failed
 
+    # The save runs before the all failed check below, so a run where
+    # every fetch failed still leaves a CSV on disk, an empty one with
+    # just a header, next to its exit 1. A reader who only checks for
+    # the file existing will think the scrape produced something.
     if not save_results_to_csv(all_results, args.output):
         sys.exit(1)
 
