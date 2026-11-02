@@ -3,162 +3,84 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Analyze Osint Scraper: what it is, how it runs, where it stops</title>
-<meta name="description" content="Analyze Osint Scraper is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.">
+<title>analyze-osint-scraper: The Squid's Light Language</title>
+<meta name="description" content="analyze-osint-scraper scrapes OSINT sources such as social media, forums, and pastebins for mentions of specific keywords or IOCs. Focused on data analysis and reporting.">
 <style>
-:root {
-  --bg: #e8dec4; --panel: #f4ecd6; --ink: #183636;
-  --mut: #ffffff;
-  --acc: #147a72; --acc2: #c65434;
-  --line: #f4ecd6;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink);
-  font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.55; }
-code, pre, .mono { font-family: 'Consolas', monospace; }
-a { color: var(--acc2); }
-.hero { padding: 3rem 6vw 1rem; }
-.hero img.banner { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; }
-.logo { width: 92px; height: 92px; border-radius: 18px;
-  border: 1px solid var(--line); }
-h1 { font-size: 2.4rem; margin: 0.4em 0 0.1em; }
-h2 { border-bottom: 2px solid var(--acc); padding-bottom: 0.2em;
-  margin-top: 2em; }
-.lede { font-size: 1.15rem; max-width: 62ch; }
-main { padding: 0 6vw 3rem; max-width: 1180px; margin: 0 auto; }
-.grid { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-.card { background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; padding: 1rem 1.2rem; }
-.card.pop { animation: rise 0.7s ease both; }
-@keyframes rise { from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; } }
-pre.code { background: #101014; color: #e8e6df; padding: 1rem 1.2rem;
-  border-radius: 12px; overflow-x: auto; font-size: 0.86rem;
-  border-left: 5px solid var(--acc); }
-table { border-collapse: collapse; width: 100%; }
-td, th { border-bottom: 1px solid var(--line); padding: 0.45rem 0.6rem;
-  text-align: left; }
-.shots { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.shots img { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; background: #f4f1e8; }
-footer { padding: 2rem 6vw; border-top: 1px solid var(--line);
-  color: var(--mut); }
-.rail { display: flex; gap: 1.2rem; align-items: flex-start; }
-.rail nav { position: sticky; top: 1rem; min-width: 180px; }
-@media (max-width: 760px) { .rail { flex-direction: column; }
-  .rail nav { position: static; } }
-@media (prefers-reduced-motion: reduce) {
-  .card.pop { animation: none; } * { scroll-behavior: auto; } }
+@font-face{font-family:'Averia Serif Libre';src:url('fonts/AveriaSerifLibre.ttf') format('truetype');}
+@font-face{font-family:'Archivo';src:url('fonts/Archivo.ttf') format('truetype');}
+:root{--deep:#0a2036;--lift:#123354;--cyan:#78dceb;--green:#6ee6a0;--pink:#f06e96;--pale:#e6eef2}
+*{box-sizing:border-box}body{margin:0;background:var(--deep);color:var(--pale);font-family:'Archivo',sans-serif;line-height:1.65}
+h1,h2{font-family:'Averia Serif Libre',serif;color:var(--cyan)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;background:#0a2036}
+.hero img.heroimg{width:100%;height:62vh;object-fit:cover;display:block}
+.hero .in{padding:1rem 6vw 2rem;max-width:1080px;margin:0 auto;width:100%}
+.logo{width:170px}
+main{padding:0 6vw 3rem;max-width:1080px;margin:0 auto}
+nav{display:flex;gap:.8rem;flex-wrap:wrap;margin:1rem 0}
+.weight{display:inline-block;text-decoration:none;color:var(--cyan);font-family:'Averia Serif Libre',serif;padding:1rem 1.5rem .9rem;background:radial-gradient(ellipse at 50% 30%,#1d4a66,#0d2c46);border:2px solid #8a6f3c;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;position:relative;transition:transform .15s,background .3s;background-size:200% 100%;background-position:100% 0}
+.weight:hover{background-image:linear-gradient(100deg,#0d2c46 30%,rgba(110,230,160,.55) 50%,#0d2c46 70%);background-position:0 0;color:#eafff2}
+.weight:active{transform:translateY(7px)}
+.weight:focus-visible{outline:3px solid var(--pink);outline-offset:3px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%}
+.board{background:var(--lift);border-left:14px solid #0d2c46;padding:0 1.5rem 1.3rem;margin:1.8rem auto;max-width:560px;background-image:repeating-linear-gradient(to bottom,transparent 0 26px,rgba(120,220,235,.5) 26px 28px);background-position:0 0;background-size:14px 100%;background-repeat:no-repeat}
+.board h2{border-bottom:2px solid var(--green);padding-bottom:.4rem}
+.board.wide{max-width:760px}
+pre{background:#071627;color:var(--pale);padding:1rem;overflow-x:auto}
+a{color:var(--green)}a:before{content:'';display:inline-block;width:15px;height:15px;margin-right:.45em;vertical-align:-2px;background:repeating-conic-gradient(from -60deg at 50% 100%,#e8bea0 0 12deg,transparent 12deg 24deg);border-radius:50%;transition:transform .2s}
+a:hover:before{transform:scale(1.35) rotate(8deg)}
+.weight:before,nav a:before{content:none}
+.pearls{width:34%;margin:2.2rem auto;height:16px;background-image:radial-gradient(circle 5px at 8px 8px,#e8e4d6 4px,transparent 5px),radial-gradient(circle 4px at 44px 6px,#e8e4d6 3px,transparent 4px),radial-gradient(circle 6px at 82px 9px,#e8e4d6 5px,transparent 6px),radial-gradient(circle 4px at 118px 7px,#e8e4d6 3px,transparent 4px);background-repeat:repeat-x;background-size:150px 16px}
+.tick{display:flex;gap:1rem;padding:.55rem 0;border-bottom:1px solid rgba(120,220,235,.25)}
+.tick b{font-family:'Averia Serif Libre',serif;color:var(--cyan);min-width:110px}
+.ends{border:2px solid var(--pink);padding:0 1.5rem 1.3rem}
+footer{padding:1rem 6vw 2.4rem;max-width:1080px;margin:0 auto}
 </style>
 </head>
-<body class="layout-note">
-<!-- This page exists for analyze-osint-scraper alone: the layout (notebook),
-     the colors, and the type were picked for this project, not
-     shared with the other project pages. The code block below is
-     copied from the file it names, line for line. If it looks
-     plain, that is because the project is plain, and I would
-     rather the page match the project than dress it up. The one
-     thing I will not do here is oversell: what this project does
-     not do is stated on the page, not hidden from it. -->
+<body>
 <header class="hero">
-  <img class="logo" src="assets/logo.png" alt="Analyze Osint Scraper logo">
-  <img class="banner" src="assets/banner.png" alt="">
-  <h1>Analyze Osint Scraper</h1>
-  <p class="mono"><a href="https://github.com/ShadowGuard-AI/analyze-osint-scraper">github.com/ShadowGuard-AI/analyze-osint-scraper</a></p>
+<img class="heroimg" src="assets/intro-banner.png" alt="A shoal of reef squid trading flashes of cyan, green, and pink over a reef slope, no text">
+<div class="in">
+<img class="logo" src="assets/logo.png" alt="Reef squid in profile with three bright bands, a pink stripe, and one large eye">
+<h1>analyze-osint-scraper</h1>
+<p>A descent down a sounding line, from bright water to dark. Each topic is a depth stop on the line.</p>
+<nav>
+<a class="weight" href="#watching">Watching</a>
+<a class="weight" href="#line">Take the line down</a>
+<a class="weight" href="#controls">The controls</a>
+<a class="weight" href="#ends">How a run ends</a>
+</nav>
+</div>
 </header>
-
 <main>
-  <section class="rail">
-    <nav aria-label="on this page">
-      <p class="mono"><a href="#run">Run it</a><br>
-      <a href="#files">The files</a><br>
-      <a href="#sheets">The sheets</a><br>
-      <a href="https://github.com/ShadowGuard-AI/analyze-osint-scraper">The repo</a></p>
-    </nav>
-    <div>
-      <p class="lede">Analyze Osint Scraper is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.</p>
-      <div class="grid">
-        <div class="card pop"><h3>What it is</h3>
-          <p>Analyze Osint Scraper: 3 files, 176 counted
-          lines across Python 152, Markdown 19, Text 5. One job, done in the
-          open, in files you can read.</p></div>
-        <div class="card pop"><h3>The biggest piece</h3>
-          <p><code>main.py</code> carries the most
-          lines. If the project grows, that file is where the growth
-          lands first, for better or worse.</p></div>
-        <div class="card pop"><h3>The honest gap</h3>
-          <p>No test files yet. That is the honest gap, and the roadmap in the visuals folder says what the first one should cover.</p></div>
-      </div>
-      <section id="run">
-        <h2>Run it</h2>
-        <p>The repo README has the exact commands for this one. The
-        shape is the shape for most of my projects: clone it, read the
-        top file first so you know what will happen, then run it on
-        something you do not mind breaking.</p>
-        <p class="mono">$ git clone https://github.com/ShadowGuard-AI/analyze-osint-scraper.git<br>$ cd analyze-osint-scraper</p>
-      </section>
-      
-  <section aria-label="real code">
-    <h2>The code, as it sits in the repo</h2>
-    <p>From <code>main.py</code>, line 10 on. I did
-    not tidy it for the page. What you see is what the file has.</p>
-    <pre class="code"><code>logging.basicConfig(level=logging.INFO, format=&#x27;%(asctime)s - %(levelname)s - %(message)s&#x27;)
-
-def setup_argparse():
-    &quot;&quot;&quot;
-    Sets up the argument parser for the script.
-
-    Returns:
-        argparse.ArgumentParser: The argument parser object.
-    &quot;&quot;&quot;
-    parser = argparse.ArgumentParser(description=&#x27;Scrapes OSINT sources for mentions of keywords or IOCs.&#x27;)
-    parser.add_argument(&#x27;-k&#x27;, &#x27;--keywords&#x27;, nargs=&#x27;+&#x27;, help=&#x27;List of keywords to search for.&#x27;, required=False)
-    parser.add_argument(&#x27;-i&#x27;, &#x27;--ioc_file&#x27;, type=str, help=&#x27;Path to a file containing IOCs (one per line).&#x27;, required=False)
-    parser.add_argument(&#x27;-u&#x27;, &#x27;--urls&#x27;, nargs=&#x27;+&#x27;, help=&#x27;List of URLs to scrape.&#x27;, required=True)
-    parser.add_argument(&#x27;-o&#x27;, &#x27;--output&#x27;, type=str, help=&#x27;Output CSV file path.&#x27;, default=&#x27;output.csv&#x27;)
-    parser.add_argument(&#x27;--max_pages&#x27;, type=int, default=1, help=&#x27;Maximum number of pages to scrape per URL.  Useful for sites with pagination. Defaults to 1.&#x27;)
-    return parser
-
-def read_iocs_from_file(ioc_file_path):
-    &quot;&quot;&quot;
-    Reads IOCs from a file, one IOC per line.
-
-    Args:</code></pre>
-  </section>
-      <section id="files">
-        <h2>The files that matter</h2>
-        <table><tr><th>File</th><th>Lines</th></tr>
-        <tr><td><code>main.py</code></td><td>152</td></tr>
-        <tr><td><code>README.md</code></td><td>19</td></tr>
-        <tr><td><code>requirements.txt</code></td><td>5</td></tr>
-        </table>
-        <p>Names doing the work: <span class="mono">setup_argparse, read_iocs_from_file, scrape_url, save_results_to_csv, main</span>.</p>
-      </section>
-      <section id="sheets">
-        <h2>Drawn by hand</h2>
-        <p>I sketch my projects on notebook paper so I have to
-        understand them well enough to draw them. The full set,
-        with the counts and how they were counted, is the
-        <a href="https://github.com/ShadowGuard-AI/analyze-osint-scraper/tree/main/analyze-osint-scraper-Visuals">analyze-osint-scraper-Visuals</a>
-        folder in the repo. Nothing is drawn over the binder holes.
-        That is a rule, not a style.</p>
-        <div class="shots">
-          <img src="assets/architecture.png" alt="Hand drawn architecture sheet for Analyze Osint Scraper">
-          <img src="assets/flowchart.png" alt="Hand drawn flowchart sheet for Analyze Osint Scraper">
-          <img src="assets/product-map.png" alt="Hand drawn product map sheet for Analyze Osint Scraper">
-        </div>
-      </section>
-    </div>
-  </section>
+<section class="board" id="watching"><h2>Watching for Mentions</h2>
+<p>First stop, near the surface, what the scraper watches: analyze-osint-scraper scrapes OSINT sources for mentions of specific keywords or IOCs, and its hunting grounds are named plainly as social media, forums, and pastebins.</p>
+<p>The program works with the requests and beautifulsoup4 libraries, and its stated focus is data analysis and reporting. No source beyond those three kinds is promised here, and no claim about accounts, logins, or private spaces appears, because the source makes none.</p>
+</section>
+<div class="pearls"></div>
+<section class="board" id="line"><h2>Take the Line Down</h2>
+<p>Installation is one clone line, exactly as the source prints it:</p>
+<pre>git clone https://github.com/ShadowGuardAI/analyze-osint-scraper
+./analyze-osint-scraper [params]</pre>
+<p>The account name in that address is written without its hyphen. The line is reproduced character for character, with the fault left visible rather than quietly repaired on this page.</p>
+</section>
+<div class="pearls"></div>
+<section class="board wide" id="controls"><h2>Handed to the Search</h2>
+<p>The controls, hung one per depth tick:</p>
+<div class="tick"><b>-h</b><span>Shows the help message and exits.</span></div>
+<div class="tick"><b>-k</b><span>Takes the list of keywords to search for.</span></div>
+<div class="tick"><b>-i</b><span>Named, Not Described. The source prints this flag with its own admission beside it, no description provided, so its tick is left blank on the line. A page that invented a duty for it would be lying about its source.</span></div>
+<div class="tick"><b>-u</b><span>Takes the list of URLs to scrape.</span></div>
+<div class="tick"><b>-o</b><span>Sets the output CSV file path.</span></div>
+<div class="tick"><b>--max_pages</b><span>Sets the maximum number of pages to scrape per URL, exists for sites with pagination, and defaults to 1.</span></div>
+</section>
+<div class="pearls"></div>
+<section class="board wide ends" id="ends"><h2>How a Run Ends</h2>
+<p>Fourth stop, in the darkest water, how a run ends. The exit rules are stated in full because the source is unusually careful here.</p>
+<p>The run exits 1 if the results CSV cannot be written, or if every named URL failed to fetch. When some pages could not be fetched, a partial failure status is printed and the run exits 0 carrying the results from the pages that were fetched.</p>
+<p>That distinction, total failure against partial failure, gets its own panel rather than a footnote.</p>
+<p>Licence closes the descent: Copyright (c) ShadowGuardAI, printed as written, with no licence named in the source and none invented on this site.</p>
+<p><a href="https://github.com/ShadowGuard-AI/analyze-osint-scraper">The repository on GitHub</a></p>
+</section>
 </main>
-<footer>
-  <p>Analyze Osint Scraper is one of my projects. This page was written
-  from the repo itself on 2026-10-30: the counts are the
-  repo's counts, the code is the repo's code, and the gaps are the
-  repo's gaps.</p>
-</footer>
+<footer><p>Theme: the squid's light language. Type: Averia Serif Libre for headings, Archivo for reading, both SIL Open Font License 1.1. No lettering reference was recorded for this project.</p></footer>
 </body>
 </html>
