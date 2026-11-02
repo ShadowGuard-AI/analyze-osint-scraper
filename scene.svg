@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="Reef slope in three bands of water: light shafts swaying far back, a shoal trading flashes in the middle, particles and a pearl strand near">
+<rect x="0" y="0" width="1200" height="300" fill="#0a2036"/>
+<g fill="#dce296" opacity="0.16">
+<polygon points="180,0 260,0 330,300 210,300"><animateTransform attributeName="transform" type="rotate" values="-2 220 0; 2 220 0; -2 220 0" dur="17s" repeatCount="indefinite"/></polygon>
+<polygon points="520,0 620,0 700,300 570,300"><animateTransform attributeName="transform" type="rotate" values="2 570 0; -2 570 0; 2 570 0" dur="21s" repeatCount="indefinite"/></polygon>
+<polygon points="880,0 950,0 1040,300 920,300"><animateTransform attributeName="transform" type="rotate" values="-1.5 915 0; 1.5 915 0; -1.5 915 0" dur="19s" repeatCount="indefinite"/></polygon>
+</g>
+<polygon points="0,238 420,214 780,232 1200,206 1200,300 0,300" fill="#10222f"/>
+<g fill="#fac85a"><circle cx="930" cy="272" r="3"/><circle cx="944" cy="274" r="2.4"/><circle cx="1080" cy="282" r="3"/><circle cx="1094" cy="284" r="2.4"/></g>
+<g stroke="#e8bea0" stroke-width="2"><path d="M520,246 l0,-12 M512,238 l16,0 M514,234 l12,8 M528,234 l-12,8" /><path d="M700,252 l0,-12 M692,244 l16,0 M694,240 l12,8 M710,240 l-12,8" /></g>
+<g>
+<g transform="translate(330,120)"><polygon points="-70,0 -44,-17 44,-13 70,0 44,13 -44,17" fill="#18425f"/><polygon points="-84,0 -58,-13 -58,13" fill="#18425f"/><circle cx="-58" cy="0" r="7" fill="#060c12"/><rect x="-38" y="-14" width="13" height="28" fill="#78dceb"><animate attributeName="opacity" values="1;1;0.15;0.15;1" keyTimes="0;0.3;0.45;0.8;1" dur="9s" repeatCount="indefinite"/></rect><rect x="-12" y="-14" width="13" height="28" fill="#6ee6a0"><animate attributeName="opacity" values="0.15;0.15;1;1;0.15" keyTimes="0;0.35;0.5;0.85;1" dur="9s" repeatCount="indefinite"/></rect><rect x="12" y="-13" width="5" height="26" fill="#f06e96"/></g>
+<g transform="translate(560,96)"><polygon points="-60,0 -38,-15 38,-11 60,0 38,11 -38,15" fill="#18425f"/><circle cx="-48" cy="0" r="6" fill="#060c12"/><rect x="-30" y="-12" width="11" height="24" fill="#78dceb"><animate attributeName="opacity" values="0.15;0.15;1;1;0.15" keyTimes="0;0.5;0.62;0.9;1" dur="9s" begin="1.2s" repeatCount="indefinite"/></rect><rect x="8" y="-11" width="11" height="22" fill="#f06e96"><animate attributeName="opacity" values="0.15;1;0.15" dur="9s" begin="1.2s" repeatCount="indefinite"/></rect></g>
+<g transform="translate(770,140)"><polygon points="-64,0 -40,-16 40,-12 64,0 40,12 -40,16" fill="#18425f"/><circle cx="-52" cy="0" r="6" fill="#060c12"/><rect x="-34" y="-13" width="12" height="26" fill="#6ee6a0"><animate attributeName="opacity" values="0.15;0.15;1;1;0.15" keyTimes="0;0.62;0.74;0.95;1" dur="9s" begin="2.4s" repeatCount="indefinite"/></rect></g>
+<g transform="translate(480,180)"><polygon points="-54,0 -34,-13 34,-10 54,0 34,10 -34,13" fill="#143650"/><circle cx="-42" cy="0" r="5" fill="#060c12"/><rect x="-24" y="-10" width="10" height="20" fill="#78dceb"><animate attributeName="opacity" values="1;0.15;0.15;1" keyTimes="0;0.25;0.7;1" dur="11s" repeatCount="indefinite"/></rect></g>
+</g>
+<g transform="translate(640,238)"><animateTransform attributeName="transform" type="rotate" values="-4 640 214; 4 640 214; -4 640 214" dur="8s" repeatCount="indefinite" additive="sum"/><polygon points="632,214 640,200 648,214" fill="#5a3c46"/><circle cx="640" cy="222" r="4.5" fill="#e8e4d6"/><circle cx="643" cy="233" r="4.5" fill="#e8e4d6"/><circle cx="641" cy="244" r="4.5" fill="#e8e4d6"/><circle cx="644" cy="255" r="4.5" fill="#e8e4d6"/></g>
+<g fill="#eef0c8">
+<circle r="2.4"><animateTransform attributeName="transform" type="translate" values="60,268; 1140,252" dur="26s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.9;0.9;0" keyTimes="0;0.08;0.92;1" dur="26s" repeatCount="indefinite"/></circle>
+<circle r="1.8"><animateTransform attributeName="transform" type="translate" values="200,286; 1200,268" dur="32s" begin="7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.8;0.8;0" keyTimes="0;0.08;0.92;1" dur="32s" begin="7s" repeatCount="indefinite"/></circle>
+<circle r="2"><animateTransform attributeName="transform" type="translate" values="0,250; 900,238" dur="22s" begin="13s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.85;0.85;0" keyTimes="0;0.08;0.92;1" dur="22s" begin="13s" repeatCount="indefinite"/></circle>
+</g>
+</svg>
