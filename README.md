@@ -1,10 +1,10 @@
-![Reef squid shoal trading flashes over a reef slope in graded light, no text](intro-banner.png)
+![One orb web close up beaded with dew at dawn, a small pale moth resting at its lower edge beside the reed, the amber droplet at the hub catching the first light](intro-banner.png)
 
 # analyze-osint-scraper
 
-![Shoal over a reef slope with the nearest squid mid flash and the name cut into a pale sounding board at the right edge](banner.png)
+![Misty reed bed at first light holding a row of orb webs at different heights, each web beaded with dew, the nearest carrying a single amber droplet at its hub while the mist thins behind](banner.png)
 
-![Reef squid with three bright bands and one pink stripe, the heading plate](logo.png)
+![Orb web photographed straight on strung between two green reeds at dawn, every strand beaded with silver dew and one single droplet at the hub lit amber, the outermost arcs cropped at the top and bottom edges of the frame](logo.png)
 
 ![Reef slope scene: shafts sway far back, flashes pass squid to squid in the middle band, particles drift near](scene.svg)
 
