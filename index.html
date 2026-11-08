@@ -3,84 +3,74 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>analyze-osint-scraper: The Squid's Light Language</title>
-<meta name="description" content="analyze-osint-scraper scrapes OSINT sources such as social media, forums, and pastebins for mentions of specific keywords or IOCs. Focused on data analysis and reporting.">
+<title>analyze-osint-scraper: The Dawn Web</title>
 <style>
-@font-face{font-family:'Averia Serif Libre';src:url('fonts/AveriaSerifLibre.ttf') format('truetype');}
-@font-face{font-family:'Archivo';src:url('fonts/Archivo.ttf') format('truetype');}
-:root{--deep:#0a2036;--lift:#123354;--cyan:#78dceb;--green:#6ee6a0;--pink:#f06e96;--pale:#e6eef2}
-*{box-sizing:border-box}body{margin:0;background:var(--deep);color:var(--pale);font-family:'Archivo',sans-serif;line-height:1.65}
-h1,h2{font-family:'Averia Serif Libre',serif;color:var(--cyan)}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;background:#0a2036}
-.hero img.heroimg{width:100%;height:62vh;object-fit:cover;display:block}
-.hero .in{padding:1rem 6vw 2rem;max-width:1080px;margin:0 auto;width:100%}
-.logo{width:170px}
-main{padding:0 6vw 3rem;max-width:1080px;margin:0 auto}
-nav{display:flex;gap:.8rem;flex-wrap:wrap;margin:1rem 0}
-.weight{display:inline-block;text-decoration:none;color:var(--cyan);font-family:'Averia Serif Libre',serif;padding:1rem 1.5rem .9rem;background:radial-gradient(ellipse at 50% 30%,#1d4a66,#0d2c46);border:2px solid #8a6f3c;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;position:relative;transition:transform .15s,background .3s;background-size:200% 100%;background-position:100% 0}
-.weight:hover{background-image:linear-gradient(100deg,#0d2c46 30%,rgba(110,230,160,.55) 50%,#0d2c46 70%);background-position:0 0;color:#eafff2}
-.weight:active{transform:translateY(7px)}
-.weight:focus-visible{outline:3px solid var(--pink);outline-offset:3px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%}
-.board{background:var(--lift);border-left:14px solid #0d2c46;padding:0 1.5rem 1.3rem;margin:1.8rem auto;max-width:560px;background-image:repeating-linear-gradient(to bottom,transparent 0 26px,rgba(120,220,235,.5) 26px 28px);background-position:0 0;background-size:14px 100%;background-repeat:no-repeat}
-.board h2{border-bottom:2px solid var(--green);padding-bottom:.4rem}
-.board.wide{max-width:760px}
-pre{background:#071627;color:var(--pale);padding:1rem;overflow-x:auto}
-a{color:var(--green)}a:before{content:'';display:inline-block;width:15px;height:15px;margin-right:.45em;vertical-align:-2px;background:repeating-conic-gradient(from -60deg at 50% 100%,#e8bea0 0 12deg,transparent 12deg 24deg);border-radius:50%;transition:transform .2s}
-a:hover:before{transform:scale(1.35) rotate(8deg)}
-.weight:before,nav a:before{content:none}
-.pearls{width:34%;margin:2.2rem auto;height:16px;background-image:radial-gradient(circle 5px at 8px 8px,#e8e4d6 4px,transparent 5px),radial-gradient(circle 4px at 44px 6px,#e8e4d6 3px,transparent 4px),radial-gradient(circle 6px at 82px 9px,#e8e4d6 5px,transparent 6px),radial-gradient(circle 4px at 118px 7px,#e8e4d6 3px,transparent 4px);background-repeat:repeat-x;background-size:150px 16px}
-.tick{display:flex;gap:1rem;padding:.55rem 0;border-bottom:1px solid rgba(120,220,235,.25)}
-.tick b{font-family:'Averia Serif Libre',serif;color:var(--cyan);min-width:110px}
-.ends{border:2px solid var(--pink);padding:0 1.5rem 1.3rem}
-footer{padding:1rem 6vw 2.4rem;max-width:1080px;margin:0 auto}
+@font-face { font-family: 'Viaoda Libre'; src: url('fonts/ViaodaLibre-400.woff2') format('woff2'); font-weight: 400; }
+@font-face { font-family: 'Public Sans'; src: url('fonts/PublicSans-400.woff2') format('woff2'); font-weight: 400; }
+@font-face { font-family: 'Public Sans'; src: url('fonts/PublicSans-700.woff2') format('woff2'); font-weight: 700; }
+:root { --silver: #cfd4d6; --reed: #476b3f; --mist: #232a26; --amber: #e8a33d; --paper: #eef0ea; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Public Sans', sans-serif; background: var(--mist); color: var(--paper); line-height: 1.6; }
+header.top { display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 3px solid var(--amber); background: #1a201c; }
+.wordmark { font-family: 'Viaoda Libre', serif; letter-spacing: .04em; font-size: 1.15rem; }
+.beacon { color: var(--amber); font-weight: 700; font-size: .85rem; letter-spacing: .14em; text-transform: uppercase; }
+.hero { text-align: center; padding: 52px 22px 10px; }
+.hero img.logo { width: 168px; height: auto; border: 4px solid var(--silver); border-radius: 6px; }
+h1, h2 { font-family: 'Viaoda Libre', serif; font-weight: 400; }
+h1 { font-size: 2.6rem; margin: 20px 0 8px; }
+.tag { color: var(--silver); max-width: 44rem; margin: 0 auto; }
+.buttons { margin: 24px 0 8px; }
+.buttons a { display: inline-block; margin: 4px; padding: 11px 22px; background: var(--amber); color: #1a201c; font-weight: 700; text-decoration: none; border-radius: 4px; }
+.buttons a.alt { background: transparent; color: var(--silver); border: 2px solid var(--reed); }
+figure.wide { max-width: 1020px; margin: 26px auto; padding: 0 18px; }
+figure.wide img { width: 100%; height: auto; display: block; border: 1px solid var(--reed); }
+figcaption { color: #a7b3a4; font-size: .9rem; padding-top: 8px; text-align: center; }
+.strip { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; padding: 22px 18px; }
+.strip div { background: #1a201c; border-top: 3px solid var(--silver); padding: 14px 18px; min-width: 180px; text-align: center; }
+.strip b { display: block; font-family: 'Viaoda Libre', serif; font-weight: 400; color: var(--amber); font-size: 1.15rem; }
+main { max-width: 880px; margin: 0 auto; padding: 10px 22px 30px; }
+h2 { color: var(--silver); border-bottom: 2px solid var(--reed); padding-bottom: 6px; margin-top: 38px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--reed); padding: 8px 12px; text-align: left; vertical-align: top; }
+th { background: #1a201c; color: var(--silver); }
+code { background: #313a33; padding: 1px 6px; border-radius: 3px; color: var(--silver); }
+.hold { border-left: 5px solid var(--amber); background: #1a201c; padding: 14px 18px; }
+footer { text-align: center; padding: 26px 18px 34px; color: #93a08f; font-size: .9rem; border-top: 3px solid var(--amber); margin-top: 30px; }
 </style>
 </head>
 <body>
-<header class="hero">
-<img class="heroimg" src="assets/intro-banner.png" alt="A shoal of reef squid trading flashes of cyan, green, and pink over a reef slope, no text">
-<div class="in">
-<img class="logo" src="assets/logo.png" alt="Reef squid in profile with three bright bands, a pink stripe, and one large eye">
-<h1>analyze-osint-scraper</h1>
-<p>A descent down a sounding line, from bright water to dark. Each topic is a depth stop on the line.</p>
-<nav>
-<a class="weight" href="#watching">Watching</a>
-<a class="weight" href="#line">Take the line down</a>
-<a class="weight" href="#controls">The controls</a>
-<a class="weight" href="#ends">How a run ends</a>
-</nav>
+<header class="top"><span class="wordmark">analyze-osint-scraper</span><span class="beacon">One amber droplet</span></header>
+<section class="hero">
+<img class="logo" src="assets/logo.png" alt="Orb web photographed straight on strung between two green reeds at dawn, every strand beaded with silver dew and one single droplet at the hub lit amber, the outermost arcs cropped at the top and bottom edges of the frame">
+<h1>The Dawn Web</h1>
+<p class="tag">Scrapes OSINT sources such as social media, forums, and pastebins for mentions of specific keywords or IOCs, the way a dew heavy orb web strung between reeds at dawn holds whatever the night air carried into it, strand by strand.</p>
+<p class="buttons"><a href="https://github.com/ShadowGuard-AI/analyze-osint-scraper">View on GitHub</a> <a class="alt" href="https://github.com/ShadowGuard-AI/analyze-osint-scraper#readme">Read the README</a></p>
+</section>
+<figure class="wide"><img src="assets/intro-banner.png" alt="One orb web close up beaded with dew at dawn, a small pale moth resting at its lower edge beside the reed, the amber droplet at the hub catching the first light"><figcaption>The catch at the lower edge, and the one droplet at the hub lit amber.</figcaption></figure>
+<div class="strip">
+<div><b>Keywords and IOCs</b>what the web is strung to catch</div>
+<div><b>3</b>requirements</div>
+<div><b>1</b>default page per URL</div>
+<div><b>CSV</b>the results file</div>
 </div>
-</header>
 <main>
-<section class="board" id="watching"><h2>Watching for Mentions</h2>
-<p>First stop, near the surface, what the scraper watches: analyze-osint-scraper scrapes OSINT sources for mentions of specific keywords or IOCs, and its hunting grounds are named plainly as social media, forums, and pastebins.</p>
-<p>The program works with the requests and beautifulsoup4 libraries, and its stated focus is data analysis and reporting. No source beyond those three kinds is promised here, and no claim about accounts, logins, or private spaces appears, because the source makes none.</p>
-</section>
-<div class="pearls"></div>
-<section class="board" id="line"><h2>Take the Line Down</h2>
-<p>Installation is one clone line, exactly as the source prints it:</p>
-<pre>git clone https://github.com/ShadowGuardAI/analyze-osint-scraper
-./analyze-osint-scraper [params]</pre>
-<p>The account name in that address is written without its hyphen. The line is reproduced character for character, with the fault left visible rather than quietly repaired on this page.</p>
-</section>
-<div class="pearls"></div>
-<section class="board wide" id="controls"><h2>Handed to the Search</h2>
-<p>The controls, hung one per depth tick:</p>
-<div class="tick"><b>-h</b><span>Shows the help message and exits.</span></div>
-<div class="tick"><b>-k</b><span>Takes the list of keywords to search for.</span></div>
-<div class="tick"><b>-i</b><span>Named, Not Described. The source prints this flag with its own admission beside it, no description provided, so its tick is left blank on the line. A page that invented a duty for it would be lying about its source.</span></div>
-<div class="tick"><b>-u</b><span>Takes the list of URLs to scrape.</span></div>
-<div class="tick"><b>-o</b><span>Sets the output CSV file path.</span></div>
-<div class="tick"><b>--max_pages</b><span>Sets the maximum number of pages to scrape per URL, exists for sites with pagination, and defaults to 1.</span></div>
-</section>
-<div class="pearls"></div>
-<section class="board wide ends" id="ends"><h2>How a Run Ends</h2>
-<p>Fourth stop, in the darkest water, how a run ends. The exit rules are stated in full because the source is unusually careful here.</p>
-<p>The run exits 1 if the results CSV cannot be written, or if every named URL failed to fetch. When some pages could not be fetched, a partial failure status is printed and the run exits 0 carrying the results from the pages that were fetched.</p>
-<p>That distinction, total failure against partial failure, gets its own panel rather than a footnote.</p>
-<p>Licence closes the descent: Copyright (c) ShadowGuardAI, printed as written, with no licence named in the source and none invented on this site.</p>
-<p><a href="https://github.com/ShadowGuard-AI/analyze-osint-scraper">The repository on GitHub</a></p>
-</section>
+<h2>What it gathers</h2>
+<p>The tool scrapes OSINT sources (e.g., social media, forums, pastebins) for mentions of specific keywords or IOCs. It uses libraries like <code>requests</code> and <code>beautifulsoup4</code>. Usage, as the README gives it: <code>./analyze-osint-scraper [params]</code>. Its requirements are <code>beautifulsoup4&gt;=0.0.1</code>, <code>pandas&gt;=2.0.0</code>, and <code>requests&gt;=2.31.0</code>.</p>
+<figure class="wide" style="padding:0;margin:18px 0;"><img src="assets/banner.png" alt="Misty reed bed at first light holding a row of orb webs at different heights, each web beaded with dew, the nearest carrying a single amber droplet at its hub while the mist thins behind"></figure>
+<h2>Parameters</h2>
+<table>
+<tr><th>Parameter</th><th>What the README says</th></tr>
+<tr><td><code>-h</code></td><td>Show help message and exit</td></tr>
+<tr><td><code>-k</code></td><td>List of keywords to search for.</td></tr>
+<tr><td><code>-i</code></td><td>No description provided</td></tr>
+<tr><td><code>-u</code></td><td>List of URLs to scrape.</td></tr>
+<tr><td><code>-o</code></td><td>Output CSV file path.</td></tr>
+<tr><td><code>--max_pages</code></td><td>Maximum number of pages to scrape per URL. Useful for sites with pagination. Defaults to 1.</td></tr>
+</table>
+<h2>Stated limits</h2>
+<div class="hold"><p>Exit status: the tool exits 1 if the results CSV cannot be written, or if every named URL failed to fetch. When some pages could not be fetched, a partial failure status is printed and the run exits 0 with the results from the pages that were fetched. The two outcomes are easy to misread as one.</p>
+<p><code>-i</code> arrives with no description in the source, and it sits between the keyword list and the URL list, the two flags a new user needs most. No purpose is guessed for it here. The licence line at the close of the README is a copyright line only, with no licence named.</p></div>
 </main>
-<footer><p>Theme: the squid's light language. Type: Averia Serif Libre for headings, Archivo for reading, both SIL Open Font License 1.1. No lettering reference was recorded for this project.</p></footer>
+<footer>analyze-osint-scraper, read droplet by droplet. Fonts: Viaoda Libre and Public Sans, self-hosted under the SIL Open Font License.</footer>
 </body>
 </html>
