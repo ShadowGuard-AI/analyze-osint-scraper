@@ -9,8 +9,7 @@
 ![Reef slope scene: shafts sway far back, flashes pass squid to squid in the middle band, particles drift near](scene.svg)
 
 
-# analyze-osint-scraper
-Scrapes OSINT sources (e.g., social media, forums, pastebins) for mentions of specific keywords or IOCs. Uses libraries like `requests` and `beautifulsoup4`. - Focused on Data analysis and reporting
+Scrapes OSINT sources (e.g., social media, forums, pastebins) for mentions of specific keywords or IOCs. Uses libraries like `requests` and `beautifulsoup4`, focusing on data analysis and reporting.
 
 ## Install
 `git clone https://github.com/ShadowGuardAI/analyze-osint-scraper`
